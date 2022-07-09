@@ -195,11 +195,17 @@ public class Deque<Item> implements Iterable<Item>
         cola.addFirst(b);
         cola.addLast(a);
         cola.addFirst(c);
-              
-       for (Integer num: cola)
-       {
-            StdOut.println(num);
-       }
+        cola.removeLast();
+        cola.addLast(a);
+
+        if(!cola.isEmpty())
+        {
+            
+            for (Integer num: cola)
+                StdOut.println(num);
+
+            StdOut.println("The size of de deque is: "+ cola.size());
+        }              
 
     }
 

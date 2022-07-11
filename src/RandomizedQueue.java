@@ -7,6 +7,8 @@ import edu.princeton.cs.algs4.StdRandom;
 public class RandomizedQueue<Item> implements Iterable<Item>
  {
 
+    //TODO: VERIFICAR LAS EXEPCIONES POR MANDAR Y VER SI SE REVISAN LOS DATOS TIPO NULL
+
     private Node first;
     private Node seek;
     int count;
@@ -72,6 +74,17 @@ public class RandomizedQueue<Item> implements Iterable<Item>
         }
         
         int ind = StdRandom.uniform(0, count-1);
+        
+        if(ind==0) // This is because when it's going to eliminate the first element of the structure
+        {           // it's necessary to update the first pointer
+        
+            Item it = first.item;
+            first = first.back;
+            first.front = null;
+            count--;
+            return it;
+        }
+        
         seek = first;
         for (int i = 0; i < ind; i++) 
             seek = seek.back;
@@ -129,13 +142,13 @@ public class RandomizedQueue<Item> implements Iterable<Item>
         private Node  current; //----->To point a element in the structure.
         private int[] indexes;//------>Array to control all index of elementes in the queue. 
         private int   remainderElm;//->To know the number of elements that remain to be traversed.
-        private int   actualIndex;//-->To traverse the array indexes.  
+        private int   traverseIndex;//-->To traverse the array indexes.  
 
         RandomizerIterator()
         {
             current = first;
             indexes = new int[count];
-            actualIndex = 0;
+            traverseIndex = 0;
             remainderElm =  count;
 
             for (int i = 0; i < indexes.length; i++)
@@ -164,19 +177,22 @@ public class RandomizedQueue<Item> implements Iterable<Item>
 
         private Item findNext()
         {
-            if(actualIndex==0)
+            if(traverseIndex==0)
             {
+                traverseIndex++;
                 remainderElm--;
                 return moveToBack(indexes[0]);
             }
-            int res = indexes[actualIndex] - indexes[actualIndex-1];
+            int res = indexes[traverseIndex] - indexes[traverseIndex-1];
 
             if(res>0)
             {
+                traverseIndex++;
                 remainderElm--;
                 return moveToBack(res);
             }
             res*=-1;
+            traverseIndex++;
             remainderElm--;
             return moveToFront(res);
             
@@ -204,6 +220,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>
     // unit testing (required)
     public static void main(String[] args)
     {
+        
         RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
 
         
@@ -215,11 +232,38 @@ public class RandomizedQueue<Item> implements Iterable<Item>
         rq.enqueue(30);
         rq.enqueue(40);
         rq.enqueue(50);
+
+        StdOut.println("Elementos en el primer for");
+        for (Integer elemnt : rq)
+        {
+            StdOut.println(elemnt);
             
-            StdOut.println("aleatorio " + rq.sample());
-            int r = rq.dequeue();
-            StdOut.println(r);
-            StdOut.println(rq.size());
+        }
+        
+
+        StdOut.println("Elementos en el segundo for");
+        for (Integer elemnt : rq)
+        {
+            StdOut.println(elemnt);
+            
+        }
+        
+        int a = rq.dequeue();
+        int b  = rq.dequeue();
+        int c = rq.dequeue();
+        rq.dequeue();
+
+        StdOut.println("a: "+ a);
+        StdOut.println("b: "+ b);
+        StdOut.println("c: "+ c);
+        
+        StdOut.println("aleatorio " + rq.sample());
+        int r = rq.dequeue();
+        rq.enqueue(100);
+        StdOut.println(r);
+        rq.dequeue();
+        StdOut.println(rq.size());
+      //  rq.dequeue();
 
             
     }

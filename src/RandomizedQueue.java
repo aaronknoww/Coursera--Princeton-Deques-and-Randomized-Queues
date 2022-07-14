@@ -213,9 +213,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>
         }
 
 
-    }
-
-    
+    }    
 
     // unit testing (required)
     public static void main(String[] args)
@@ -249,7 +247,7 @@ public class RandomizedQueue<Item> implements Iterable<Item>
         }
         
         int a = rq.dequeue();
-        int b  = rq.dequeue();
+        int b = rq.dequeue();
         int c = rq.dequeue();
         rq.dequeue();
 
